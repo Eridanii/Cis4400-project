@@ -1,0 +1,195 @@
+ #Download Libraries
+!pip install azure-storage-blob
+
+#Import Libraries
+import pandas as pd
+import numpy as np
+import json
+import requests
+import csv
+from io import StringIO
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from math import ceil
+import datetime
+import calendar
+
+#Specify the path to your JSON configuration file
+config_file_path= 'config.json'
+
+#Load the JSON configuration file
+with open (config_file_path, 'r') as config_file:
+  config = json.load(config_file)
+
+CONNECTION_STRING_AZURE_STORAGE = config["connectionString"]
+CONTAINER_AZURE = 'researchpaymentdata'
+#blob_name = ".csv"
+
+#Initialize the BlobServiceClient
+blob_service_client = BlobServiceClient.from_connection_string (CONNECTION_STRING_AZURE_STORAGE)
+# Get the container client
+container_client = blob_service_client.get_container_client (CONTAINER_AZURE)
+
+researchpaymentdata_df = pd.DataFrame()
+
+
+# List all blobs in the speciffed container
+blob_list = container_client.list_blobs ()
+for blob in blob_list:
+  print (blob.name)
+  blob_client = container_client.get_blob_client (blob=blob.name)
+  blob_data = blob_client.download_blob()
+  blob_content = blob_data.readall().decode('utf-8')
+  df = pd.read_csv(StringIO(blob_content))
+
+  print (df.shape)
+  df.columns
+  df.head()
+
+  columns_to_drop = ['Change_Type', 'Teaching_Hospital_CCN', 'Covered_Recipient_NPI',
+    'Covered_Recipient_Middle_Name', 'Covered_Recipient_Name_Suffix',
+    'Recipient_Primary_Business_Street_Address_Line2', 'Recipient_Province',
+    'Recipient_Postal_Code', 'Covered_Recipient_Primary_Type_2',
+    'Covered_Recipient_Primary_Type_3', 'Covered_Recipient_Primary_Type_4',
+    'Covered_Recipient_Primary_Type_5', 'Covered_Recipient_Primary_Type_6',
+    'Covered_Recipient_Specialty_2', 'Covered_Recipient_Specialty_3',
+    'Covered_Recipient_Specialty_4', 'Covered_Recipient_Specialty_5',
+    'Covered_Recipient_Specialty_6', 'Covered_Recipient_License_State_code1',
+    'Covered_Recipient_License_State_code2', 'Covered_Recipient_License_State_code3',
+    'Covered_Recipient_License_State_code4', 'Covered_Recipient_License_State_code5',
+    'Principal_Investigator_1_NPI', 'Principal_Investigator_1_Middle_Name',
+    'Principal_Investigator_1_Name_Suffix', 'Principal_Investigator_1_Business_Street_Address_Line2',
+    'Principal_Investigator_1_Province', 'Principal_Investigator_1_Postal_Code',
+    'Principal_Investigator_1_Primary_Type_2', 'Principal_Investigator_1_Primary_Type_3',
+    'Principal_Investigator_1_Primary_Type_4', 'Principal_Investigator_1_Primary_Type_5',
+    'Principal_Investigator_1_Primary_Type_6', 'Principal_Investigator_1_Specialty_2',
+    'Principal_Investigator_1_Specialty_3', 'Principal_Investigator_1_Specialty_4',
+    'Principal_Investigator_1_Specialty_5', 'Principal_Investigator_1_Specialty_6',
+    'Principal_Investigator_1_License_State_code1', 'Principal_Investigator_1_License_State_code2',
+    'Principal_Investigator_1_License_State_code3', 'Principal_Investigator_1_License_State_code4',
+    'Principal_Investigator_1_License_State_code5', 'Principal_Investigator_2_Covered_Recipient_Type',
+    'Principal_Investigator_2_Profile_ID', 'Principal_Investigator_2_NPI',
+    'Principal_Investigator_2_First_Name', 'Principal_Investigator_2_Middle_Name',
+    'Principal_Investigator_2_Last_Name', 'Principal_Investigator_2_Name_Suffix',
+    'Principal_Investigator_2_Business_Street_Address_Line1', 'Principal_Investigator_2_Business_Street_Address_Line2',
+    'Principal_Investigator_2_City', 'Principal_Investigator_2_State',
+    'Principal_Investigator_2_Zip_Code', 'Principal_Investigator_2_Country',
+    'Principal_Investigator_2_Province', 'Principal_Investigator_2_Postal_Code',
+    'Principal_Investigator_2_Primary_Type_1', 'Principal_Investigator_2_Primary_Type_2',
+    'Principal_Investigator_2_Primary_Type_3', 'Principal_Investigator_2_Primary_Type_4',
+    'Principal_Investigator_2_Primary_Type_5', 'Principal_Investigator_2_Primary_Type_6',
+    'Principal_Investigator_2_Specialty_1', 'Principal_Investigator_2_Specialty_2',
+    'Principal_Investigator_2_Specialty_3', 'Principal_Investigator_2_Specialty_4',
+    'Principal_Investigator_2_Specialty_5', 'Principal_Investigator_2_Specialty_6',
+    'Principal_Investigator_2_License_State_code1', 'Principal_Investigator_2_License_State_code2',
+    'Principal_Investigator_2_License_State_code3', 'Principal_Investigator_2_License_State_code4',
+    'Principal_Investigator_2_License_State_code5', 'Principal_Investigator_3_Covered_Recipient_Type',
+    'Principal_Investigator_3_Profile_ID', 'Principal_Investigator_3_NPI',
+    'Principal_Investigator_3_First_Name', 'Principal_Investigator_3_Middle_Name',
+    'Principal_Investigator_3_Last_Name', 'Principal_Investigator_3_Name_Suffix',
+    'Principal_Investigator_3_Business_Street_Address_Line1', 'Principal_Investigator_3_Business_Street_Address_Line2',
+            'Principal_Investigator_3_City', 'Principal_Investigator_3_State',
+'Principal_Investigator_3_Zip_Code', 'Principal_Investigator_3_Country',
+'Principal_Investigator_3_Province', 'Principal_Investigator_3_Postal_Code',
+'Principal_Investigator_3_Primary_Type_1', 'Principal_Investigator_3_Primary_Type_2',
+'Principal_Investigator_3_Primary_Type_3', 'Principal_Investigator_3_Primary_Type_4',
+'Principal_Investigator_3_Primary_Type_5', 'Principal_Investigator_3_Primary_Type_6',
+'Principal_Investigator_3_Specialty_1', 'Principal_Investigator_3_Specialty_2',
+'Principal_Investigator_3_Specialty_3', 'Principal_Investigator_3_Specialty_4',
+'Principal_Investigator_3_Specialty_5', 'Principal_Investigator_3_Specialty_6',
+'Principal_Investigator_3_License_State_code1', 'Principal_Investigator_3_License_State_code2',
+'Principal_Investigator_3_License_State_code3', 'Principal_Investigator_3_License_State_code4',
+'Principal_Investigator_3_License_State_code5', 'Principal_Investigator_4_Covered_Recipient_Type',
+'Principal_Investigator_4_Profile_ID', 'Principal_Investigator_4_NPI',
+'Principal_Investigator_4_First_Name', 'Principal_Investigator_4_Middle_Name',
+'Principal_Investigator_4_Last_Name', 'Principal_Investigator_4_Name_Suffix',
+'Principal_Investigator_4_Business_Street_Address_Line1', 'Principal_Investigator_4_Business_Street_Address_Line2',
+'Principal_Investigator_4_City', 'Principal_Investigator_4_State',
+'Principal_Investigator_4_Zip_Code', 'Principal_Investigator_4_Country',
+'Principal_Investigator_4_Province', 'Principal_Investigator_4_Postal_Code',
+'Principal_Investigator_4_Primary_Type_1', 'Principal_Investigator_4_Primary_Type_2',
+'Principal_Investigator_4_Primary_Type_3', 'Principal_Investigator_4_Primary_Type_4',
+'Principal_Investigator_4_Primary_Type_5', 'Principal_Investigator_4_Primary_Type_6',
+'Principal_Investigator_4_Specialty_1', 'Principal_Investigator_4_Specialty_2',
+'Principal_Investigator_4_Specialty_3', 'Principal_Investigator_4_Specialty_4',
+'Principal_Investigator_4_Specialty_5', 'Principal_Investigator_4_Specialty_6',
+'Principal_Investigator_4_License_State_code1', 'Principal_Investigator_4_License_State_code2',
+'Principal_Investigator_4_License_State_code3', 'Principal_Investigator_4_License_State_code4',
+'Principal_Investigator_4_License_State_code5', 'Principal_Investigator_5_Covered_Recipient_Type',
+'Principal_Investigator_5_Profile_ID', 'Principal_Investigator_5_NPI',
+'Principal_Investigator_5_First_Name', 'Principal_Investigator_5_Middle_Name',
+'Principal_Investigator_5_Last_Name', 'Principal_Investigator_5_Name_Suffix',
+'Principal_Investigator_5_Business_Street_Address_Line1', 'Principal_Investigator_5_Business_Street_Address_Line2',
+'Principal_Investigator_5_City', 'Principal_Investigator_5_State',
+'Principal_Investigator_5_Zip_Code', 'Principal_Investigator_5_Country',
+'Principal_Investigator_5_Province', 'Principal_Investigator_5_Postal_Code',
+'Principal_Investigator_5_Primary_Type_1', 'Principal_Investigator_5_Primary_Type_2',
+'Principal_Investigator_5_Primary_Type_3', 'Principal_Investigator_5_Primary_Type_4',
+'Principal_Investigator_5_Primary_Type_5', 'Principal_Investigator_5_Primary_Type_6',
+'Principal_Investigator_5_Specialty_1', 'Principal_Investigator_5_Specialty_2',
+'Principal_Investigator_5_Specialty_3', 'Principal_Investigator_5_Specialty_4',
+'Principal_Investigator_5_Specialty_5', 'Principal_Investigator_5_Specialty_6',
+'Principal_Investigator_5_License_State_code1', 'Principal_Investigator_5_License_State_code2',
+'Principal_Investigator_5_License_State_code3', 'Principal_Investigator_5_License_State_code4',
+'Principal_Investigator_5_License_State_code5', 'Related_Product_Indicator',
+'Covered_or_Noncovered_Indicator_1', 'Indicate_Drug_or_Biological_or_Device_or_Medical_Supply_1',
+'Product_Category_or_Therapeutic_Area_1', 'Name_of_Drug_or_Biological_or_Device_or_Medical_Supply_1',
+'Associated_Drug_or_Biological_NDC_1', 'Associated_Device_or_Medical_Supply_PDI_1',
+'Covered_or_Noncovered_Indicator_2', 'Indicate_Drug_or_Biological_or_Device_or_Medical_Supply_2',
+'Product_Category_or_Therapeutic_Area_2', 'Name_of_Drug_or_Biological_or_Device_or_Medical_Supply_2',
+'Associated_Drug_or_Biological_NDC_2', 'Associated_Device_or_Medical_Supply_PDI_2',
+'Covered_or_Noncovered_Indicator_3', 'Indicate_Drug_or_Biological_or_Device_or_Medical_Supply_3',
+'Product_Category_or_Therapeutic_Area_3', 'Name_of_Drug_or_Biological_or_Device_or_Medical_Supply_3',
+'Associated_Drug_or_Biological_NDC_3', 'Associated_Device_or_Medical_Supply_PDI_3',
+'Covered_or_Noncovered_Indicator_4', 'Indicate_Drug_or_Biological_or_Device_or_Medical_Supply_4',
+'Product_Category_or_Therapeutic_Area_4', 'Name_of_Drug_or_Biological_or_Device_or_Medical_Supply_4',
+'Associated_Drug_or_Biological_NDC_4', 'Associated_Device_or_Medical_Supply_PDI_4',
+'Covered_or_Noncovered_Indicator_5', 'Indicate_Drug_or_Biological_or_Device_or_Medical_Supply_5',
+'Product_Category_or_Therapeutic_Area_5', 'Name_of_Drug_or_Biological_or_Device_or_Medical_Supply_5',
+'Associated_Drug_or_Biological_NDC_5', 'Associated_Device_or_Medical_Supply_PDI_5',
+'Total_Amount_of_Payment_USDollars','Form_of_Payment_or_Transfer_of_Value','Expenditure_Category1', 'Expenditure_Category2',
+       'Expenditure_Category3', 'Expenditure_Category4',
+       'Expenditure_Category5', 'Expenditure_Category6',
+       'Preclinical_Research_Indicator', 'Delay_in_Publication_Indicator',
+       'Name_of_Study', 'Dispute_Status_for_Publication',
+       'Program_Year', 'Payment_Publication_Date',
+       'ClinicalTrials_Gov_Identifier', 'Research_Information_Link',
+       'Context_of_Research'     ]
+df.drop(columns=columns_to_drop, inplace=True)
+
+
+dim_covered_recipients = df[['Covered_Recipient_Profile_ID',
+                             'Noncovered_Recipient_Entity_Name', 'Covered_Recipient_First_Name',
+                             'Covered_Recipient_Last_Name', 'Covered_Recipient_Primary_Type_1',
+                             'Covered_Recipient_Specialty_1']].drop_duplicates()
+
+
+dim_principal_investigators = df[['Principal_Investigator_1_Profile_ID',
+                                  'Principal_Investigator_1_Covered_Recipient_Type',
+                                  'Principal_Investigator_1_First_Name',
+                                  'Principal_Investigator_1_Last_Name',
+                                  'Principal_Investigator_1_Business_Street_Address_Line1',
+                                  'Principal_Investigator_1_City',
+                                  'Principal_Investigator_1_State',
+                                  'Principal_Investigator_1_Zip_Code',
+                                  'Principal_Investigator_1_Primary_Type_1',
+                                  'Principal_Investigator_1_Specialty_1']].drop_duplicates()
+
+
+dim_payment_details = df[['Applicable_Manufacturer_or_Applicable_GPO_Making_Payment_ID',
+                          'Submitting_Applicable_Manufacturer_or_Applicable_GPO_Name',
+                          'Applicable_Manufacturer_or_Applicable_GPO_Making_Payment_Name',
+                          'Applicable_Manufacturer_or_Applicable_GPO_Making_Payment_State',
+                          'Applicable_Manufacturer_or_Applicable_GPO_Making_Payment_Country']].drop_duplicates()
+
+
+#Creating Fact Table for Research Payments
+fact_table = df[['Covered_Recipient_Profile_ID', 'Teaching_Hospital_ID', 'Date_of_Payment']]
+
+fact_table['Applicable_Manufacturer_or_Applicable_GPO_Making_Payment_ID'] = df['Applicable_Manufacturer_or_Applicable_GPO_Making_Payment_ID'].astype(str).str.replace(r'(\d)(?=(\d{3})+(?!\d))', r'\1,')
+
+df['Principal_Investigator_1_Profile_ID'] = pd.to_numeric(df['Principal_Investigator_1_Profile_ID'], errors='coerce').fillna(0)
+fact_table['Principal_Investigator_1_Profile_ID'] = df['Principal_Investigator_1_Profile_ID'].round().astype(int)
+
+df['Record_ID'] = pd.to_numeric(df['Record_ID'], errors='coerce').fillna(0)
+fact_table['Record_ID'] = df['Record_ID'].round().astype(int)
+
