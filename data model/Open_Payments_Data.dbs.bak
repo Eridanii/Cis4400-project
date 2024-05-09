@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Cis4400-Term Project" id="LogicalDesign-e53" database="LogicalDesign" >
+	<schema name="INSTANCE" catalogname="Cis4400-Term Project" >
+		<table name="Dim_Covered_Recipient" prior="Dim_Covered_Rece" >
+			<column name="dim_Covered_Recipient_ID" prior="dim_Covered_Recipient_Profile_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Covered_Recipient_First_Name" type="VARCHAR" length="20" jt="12" />
+			<column name="Covered_Recipient_Middle_Name" type="VARCHAR" length="20" jt="12" />
+			<column name="Covered_Recipient_Last_Name" type="VARCHAR" length="35" jt="12" />
+			<column name="Covered_Recipient_Primary_Type_1" type="VARCHAR" length="100" jt="12" />
+			<column name="Covered_Recipient_Specialty_1" type="VARCHAR" length="300" jt="12" />
+			<column name="Covered_Recipient_License_State_code1" type="VARCHAR" length="2" jt="12" />
+			<index name="pk_Dim_Covered_Recipient" unique="PRIMARY_KEY" >
+				<column name="dim_Covered_Recipient_ID" />
+			</index>
+		</table>
+		<table name="Dim_Covered_Recipients" prior="Entity" >
+			<column name="Covered_Recipient_Profile_ID" type="DATE" jt="91" mandatory="y" />
+			<column name="Covered_Recipient_Type" type="DATE" jt="91" />
+			<column name="Covered_Recipient_Entity_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Covered_Recipient_First_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Covered_Recipient_Middle_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Covered_Recipient_Last_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Covered_Recipient_Primary_Type" type="VARCHAR" jt="12" />
+			<column name="Covered_Recipient_Specialty" type="VARCHAR" jt="12" />
+			<index name="pk_Dim_Covered_Recipients" unique="PRIMARY_KEY" >
+				<column name="Covered_Recipient_Profile_ID" />
+			</index>
+		</table>
+		<table name="Dim_Payent_Details" prior="Entity" >
+			<column name="Record_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Program_Year" type="INT" jt="4" />
+			<index name="pk_Dim_Payent_Details" unique="PRIMARY_KEY" >
+				<column name="Record_ID" />
+			</index>
+		</table>
+		<table name="Dim_Payment_Details" prior="Dim_payment_Details" >
+			<column name="Applicable_GPO_Name" prior="Submitting_Applicable_Manufacturer_or_Applicable_GPO_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Applicable_GPO_Making_Payment_ID" prior="Applicable_Manufacturer_or_Applicable_GPO_Making_Payment_ID" type="INT" jt="4" />
+			<column name="Applicable_GPO_Making_Payment_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Applicable_GPO_Making_Payment_State" type="VARCHAR" jt="12" />
+			<column name="Applicable_GPO_Making_Payment_Country" type="CHAR" length="2" jt="1" />
+			<index name="pk_Applicable_GPO_Making_Payment_ID" unique="UNIQUE_KEY" >
+				<column name="Applicable_GPO_Making_Payment_ID" />
+			</index>
+		</table>
+		<table name="Dim_Payment_detail" prior="Dim_Payment" >
+			<column name="dim_Paymnet_detail_ID" prior="dim_Paymnet_ID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="Date_of_Payment" type="DATE" jt="91" />
+			<column name="Program_Year" type="DATE" jt="91" />
+			<column name="Payment_Publication_Date" type="DATE" jt="91" />
+			<column name="Form_of_Payement_or_Transfer_of_Value" type="VARCHAR" length="100" jt="12" />
+			<column name="Nature_of_Payment_or_Transfer_of_Value" type="VARCHAR" length="200" jt="12" />
+			<index name="pk_Dim_Payment" unique="PRIMARY_KEY" >
+				<column name="dim_Paymnet_detail_ID" />
+			</index>
+		</table>
+		<table name="Dim_Physicians" prior="Entity" >
+			<column name="Physician_Profile_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Physician_First_Name" type="VARCHAR" length="100" jt="12" mandatory="y" />
+			<column name="Physician_Last_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Physician_Primary_Type" type="VARCHAR" jt="12" />
+			<column name="Physician_Specialty" type="VARCHAR" jt="12" />
+			<index name="pk_Dim_Physicians" unique="PRIMARY_KEY" >
+				<column name="Physician_Profile_ID" />
+				<column name="Physician_First_Name" />
+			</index>
+			<index name="unq_Physician_Profile_ID" unique="UNIQUE_INDEX" >
+				<column name="Physician_Profile_ID" />
+			</index>
+		</table>
+		<table name="Dim_Principal_Investigators" prior="Dim_Principal_Investigator_" >
+			<column name="Principal_Investigator_Profile_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Principal_Investigator_Covered_Recipient_Type" type="INT" jt="4" />
+			<column name="Principal_Investigator_First_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Principal_Investigator_Last_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Principal_Investigator_Business_Street_Address" type="VARCHAR" length="100" jt="12" />
+			<column name="Principal_Investigator_City" type="VARCHAR" jt="12" />
+			<column name="Principal_Investigator_State" type="VARCHAR" jt="12" />
+			<column name="Principal_Investigator_Zip_Code" type="VARCHAR" jt="12" />
+			<column name="Principal_Investigator_Primary_Type" type="VARCHAR" jt="12" />
+			<column name="Principal_Investigator_Specialty" type="VARCHAR" jt="12" />
+			<index name="pk_Dim_Principal_Investigators" unique="PRIMARY_KEY" >
+				<column name="Principal_Investigator_Profile_ID" />
+			</index>
+		</table>
+		<table name="Dim_Teaching_Hospital" prior="Dim_Teaching Hospital" >
+			<column name="dim_Teaching_Hospital_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Teaching_Hospital_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Teaching_Hospital_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Recipient_Primary_Business_Street_Address_Line1" prior="Recipient_Primary_Business_Street_Address_Line" type="VARCHAR" length="100" jt="12" />
+			<column name="Recipient_City" type="VARCHAR" jt="12" />
+			<column name="Recipient_State" type="VARCHAR" jt="12" />
+			<column name="Recipient_Zip_Code" type="VARCHAR" jt="12" />
+			<index name="pk_Dim_Teaching_Hospital" unique="PRIMARY_KEY" >
+				<column name="dim_Teaching_Hospital_ID" />
+			</index>
+		</table>
+		<table name="Fact_General_Payments" prior="Fact_Payments" >
+			<column name="Fact_id" prior="Record_ID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="Total_Amount_of_Payment_USDollars" type="MONEY" jt="3" />
+			<column name="Number_of_Payments_Included_in_Total_Amount" type="MONEY" jt="3" />
+			<column name="Physician_Ownership_Indicator" type="VARCHAR" length="3" jt="12" />
+			<column name="dim_covered_recipient_ID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="dim_payment_ID" prior="dim_Payment_ID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="dim_teaching_hospital" type="BIGINT" jt="-5" mandatory="y" />
+			<index name="pk_Fact_Payments" unique="PRIMARY_KEY" >
+				<column name="Fact_id" />
+			</index>
+			<fk name="fk_Fact_General_Payments_Dim_Payment" to_schema="Cis4400-Term Project.INSTANCE" to_table="Dim_Payment_detail" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="dim_payment_ID" pk="dim_Paymnet_detail_ID" />
+			</fk>
+			<fk name="fk_Fact_General_Payments_Dim_Covered_Recipient" to_schema="Cis4400-Term Project.INSTANCE" to_table="Dim_Covered_Recipient" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="dim_covered_recipient_ID" pk="dim_Covered_Recipient_ID" />
+			</fk>
+			<fk name="fk_Fact_General_Payments_Dim_Teaching_Hospital" to_schema="Cis4400-Term Project.INSTANCE" to_table="Dim_Teaching_Hospital" type="NonIdentifying" mandatory="y" cardinality="OneMore" range_from="0" range_to="0" >
+				<fk_column name="dim_teaching_hospital" pk="dim_Teaching_Hospital_ID" />
+			</fk>
+		</table>
+		<table name="Fact_Ownership_Payments" prior="Fact_Resea" >
+			<column name="Record_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Physician_Profile_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Total_Amount_Invested_USDollars" type="INT" jt="4" />
+			<column name="Value_of_Interest" type="INT" jt="4" />
+			<column name="Terms_of_Interest" type="INT" jt="4" />
+			<column name="Submitting_Applicable_Manufacturer" type="INT" jt="4" />
+			<column name="Applicable_Manufacturer_Payment_ID" type="INT" jt="4" />
+			<column name="Applicable_Manufacturer_Name" type="VARCHAR" length="100" jt="12" />
+			<column name="Applicable_Manufacturer_State" type="VARCHAR" jt="12" />
+			<column name="Applicable_Manufacturer_Country" type="CHAR" length="2" jt="1" />
+			<column name="Dispute_Status_for_Publication" type="CHAR" length="100" jt="1" />
+			<column name="Interest_Held_by_Physician" type="CHAR" length="100" jt="1" />
+			<column name="Payment_Publication_Date" type="DATE" jt="91" />
+			<index name="pk_Fact_Ownership_Payments" unique="PRIMARY_KEY" >
+				<column name="Record_ID" />
+			</index>
+			<index name="unq_Physician_Profile_ID" unique="UNIQUE_INDEX" >
+				<column name="Physician_Profile_ID" />
+			</index>
+			<fk name="fk_Fact_Ownership_Payments_Dim_Physicians" to_schema="Cis4400-Term Project.INSTANCE" to_table="Dim_Physicians" type="NonIdentifying" mandatory="y" cardinality="One" range_from="0" range_to="0" >
+				<fk_column name="Physician_Profile_ID" pk="Physician_Profile_ID" />
+			</fk>
+			<fk name="fk_Fact_Ownership_Payments_Dim_Payent_Details" to_schema="Cis4400-Term Project.INSTANCE" to_table="Dim_Payent_Details" type="NonIdentifying" mandatory="y" cardinality="One" range_from="0" range_to="0" >
+				<fk_column name="Record_ID" pk="Record_ID" />
+			</fk>
+		</table>
+		<table name="Fact_Research_Payments" prior="Fact" >
+			<column name="Covered_Recipient_Profile_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Teaching_Hospital_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Principal_Investigator_Profile_ID" prior="Principal_Investigator_1_Profile_ID" type="INT" jt="4" mandatory="y" />
+			<column name="Total_Amount_of_Payment_USDollars" type="INT" jt="4" />
+			<column name="Date_of_Payment" type="DATE" jt="91" />
+			<column name="Form_of_Payment" type="DATE" jt="91" />
+			<column name="Applicable_GPO_Making_Payment" type="INT" jt="4" mandatory="y" />
+			<index name="pk_Fact_Research_Payments" unique="PRIMARY_KEY" >
+				<column name="Covered_Recipient_Profile_ID" />
+				<column name="Teaching_Hospital_ID" />
+				<column name="Principal_Investigator_Profile_ID" />
+				<column name="Applicable_GPO_Making_Payment" />
+			</index>
+			<index name="unq_Covered_Recipient_Profile_ID" unique="UNIQUE_INDEX" >
+				<column name="Covered_Recipient_Profile_ID" />
+			</index>
+			<fk name="fk_Fact_Research_Payments_Dim_Teaching_Hospital" to_schema="Cis4400-Term Project.INSTANCE" to_table="Dim_Teaching_Hospital" type="NonIdentifying" mandatory="y" cardinality="One" range_from="0" range_to="0" >
+				<fk_column name="Teaching_Hospital_ID" pk="Teaching_Hospital_ID" />
+			</fk>
+			<fk name="fk_Fact_Research_Payments_Dim_Covered_Recipients" to_schema="Cis4400-Term Project.INSTANCE" to_table="Dim_Covered_Recipients" type="NonIdentifying" mandatory="y" cardinality="One" range_from="0" range_to="0" >
+				<fk_column name="Covered_Recipient_Profile_ID" pk="Covered_Recipient_Profile_ID" />
+			</fk>
+			<fk name="fk_Fact_Research_Payments_Dim_Principal_Investigators" to_schema="Cis4400-Term Project.INSTANCE" to_table="Dim_Principal_Investigators" type="NonIdentifying" mandatory="y" cardinality="One" range_from="0" range_to="0" >
+				<fk_column name="Principal_Investigator_Profile_ID" pk="Principal_Investigator_Profile_ID" />
+			</fk>
+			<fk name="fk_Fact_Research_Payments_Dim_Payment_Details" to_schema="Cis4400-Term Project.INSTANCE" to_table="Dim_Payment_Details" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="Applicable_GPO_Making_Payment" pk="Applicable_GPO_Making_Payment_ID" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-1373" show_relation="columns" >
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Dim_Covered_Recipient" color="C1D8EE" x="48" y="304" />
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Dim_Covered_Recipients" color="C1D8EE" x="1136" y="256" />
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Dim_Payent_Details" color="C1D8EE" x="560" y="944" />
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Dim_Payment_Details" color="C1D8EE" x="1232" y="592" />
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Dim_Payment_detail" color="C1D8EE" x="352" y="48" />
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Dim_Physicians" color="C1D8EE" x="160" y="688" />
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Dim_Principal_Investigators" color="C1D8EE" x="1152" y="816" />
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Dim_Teaching_Hospital" color="C1D8EE" x="736" y="96" />
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Fact_General_Payments" color="C1D8EE" x="448" y="320" />
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Fact_Ownership_Payments" color="C1D8EE" x="448" y="640" />
+		<entity schema="Cis4400-Term Project.INSTANCE" name="Fact_Research_Payments" color="C1D8EE" x="848" y="592" />
+	</layout>
+</project>
