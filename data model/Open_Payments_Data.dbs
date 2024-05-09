@@ -2,7 +2,7 @@
 <project name="Cis4400-Term Project" id="LogicalDesign-e53" database="LogicalDesign" >
 	<schema name="INSTANCE" catalogname="Cis4400-Term Project" >
 		<table name="Dim_Covered_Recipient" prior="Dim_Covered_Rece" >
-			<column name="dim_Covered_Recipient_ID" prior="dim_Covered_Recipient_Profile_ID" type="INT" jt="4" mandatory="y" />
+			<column name="dim_Covered_Recipient_ID" prior="dim_Covered_Recipient_Profile_ID" type="BIGINT" jt="-5" mandatory="y" />
 			<column name="Covered_Recipient_First_Name" type="VARCHAR" length="20" jt="12" />
 			<column name="Covered_Recipient_Middle_Name" type="VARCHAR" length="20" jt="12" />
 			<column name="Covered_Recipient_Last_Name" type="VARCHAR" length="35" jt="12" />
@@ -14,14 +14,14 @@
 			</index>
 		</table>
 		<table name="Dim_Covered_Recipients" prior="Entity" >
-			<column name="Covered_Recipient_Profile_ID" type="BIGINT" jt="-5" mandatory="y" />
-			<column name="Covered_Recipient_Type" type="DATE" jt="91" />
-			<column name="Covered_Recipient_Entity_Name" type="VARCHAR" length="100" jt="12" />
-			<column name="Covered_Recipient_First_Name" type="VARCHAR" length="100" jt="12" />
-			<column name="Covered_Recipient_Middle_Name" type="VARCHAR" length="100" jt="12" />
-			<column name="Covered_Recipient_Last_Name" type="VARCHAR" length="100" jt="12" />
-			<column name="Covered_Recipient_Primary_Type" type="VARCHAR" jt="12" />
-			<column name="Covered_Recipient_Specialty" type="VARCHAR" jt="12" />
+			<column name="Covered_Recipient_Profile_ID" type="VARCHAR" length="38" jt="12" mandatory="y" />
+			<column name="Covered_Recipient_Type" type="VARCHAR" length="50" jt="12" />
+			<column name="Covered_Recipient_Entity_Name" type="VARCHAR" length="50" jt="12" />
+			<column name="Covered_Recipient_First_Name" type="VARCHAR" length="20" jt="12" />
+			<column name="Covered_Recipient_Middle_Name" type="VARCHAR" length="20" jt="12" />
+			<column name="Covered_Recipient_Last_Name" type="VARCHAR" length="35" jt="12" />
+			<column name="Covered_Recipient_Primary_Type" type="VARCHAR" length="100" jt="12" />
+			<column name="Covered_Recipient_Specialty" type="VARCHAR" length="300" jt="12" />
 			<index name="pk_Dim_Covered_Recipients" unique="PRIMARY_KEY" >
 				<column name="Covered_Recipient_Profile_ID" />
 			</index>
@@ -37,8 +37,8 @@
 			<column name="Applicable_GPO_Name" prior="Submitting_Applicable_Manufacturer_or_Applicable_GPO_Name" type="VARCHAR" length="100" jt="12" />
 			<column name="Applicable_GPO_Making_Payment_ID" prior="Applicable_Manufacturer_or_Applicable_GPO_Making_Payment_ID" type="BIGINT" jt="-5" />
 			<column name="Applicable_GPO_Making_Payment_Name" type="VARCHAR" length="100" jt="12" />
-			<column name="Applicable_GPO_Making_Payment_State" type="VARCHAR" jt="12" />
-			<column name="Applicable_GPO_Making_Payment_Country" type="CHAR" length="2" jt="1" />
+			<column name="Applicable_GPO_Making_Payment_State" type="VARCHAR" length="2" jt="12" />
+			<column name="Applicable_GPO_Making_Payment_Country" type="CHAR" length="100" jt="1" />
 			<index name="pk_Applicable_GPO_Making_Payment_ID" unique="UNIQUE_KEY" >
 				<column name="Applicable_GPO_Making_Payment_ID" />
 			</index>
@@ -55,11 +55,11 @@
 			</index>
 		</table>
 		<table name="Dim_Physicians" prior="Entity" >
-			<column name="Physician_Profile_ID" type="INT" jt="4" mandatory="y" />
-			<column name="Physician_First_Name" type="VARCHAR" length="100" jt="12" mandatory="y" />
-			<column name="Physician_Last_Name" type="VARCHAR" length="100" jt="12" />
-			<column name="Physician_Primary_Type" type="VARCHAR" jt="12" />
-			<column name="Physician_Specialty" type="VARCHAR" jt="12" />
+			<column name="Physician_Profile_ID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="Physician_First_Name" type="VARCHAR" length="20" jt="12" mandatory="y" />
+			<column name="Physician_Last_Name" type="VARCHAR" length="35" jt="12" />
+			<column name="Physician_Primary_Type" type="VARCHAR" length="50" jt="12" />
+			<column name="Physician_Specialty" type="VARCHAR" length="300" jt="12" />
 			<index name="pk_Dim_Physicians" unique="PRIMARY_KEY" >
 				<column name="Physician_Profile_ID" />
 				<column name="Physician_First_Name" />
@@ -69,23 +69,23 @@
 			</index>
 		</table>
 		<table name="Dim_Principal_Investigators" prior="Dim_Principal_Investigator_" >
-			<column name="Principal_Investigator_Profile_ID" type="BIGINT" jt="-5" mandatory="y" />
-			<column name="Principal_Investigator_Covered_Recipient_Type" type="INT" jt="4" />
-			<column name="Principal_Investigator_First_Name" type="VARCHAR" length="100" jt="12" />
-			<column name="Principal_Investigator_Last_Name" type="VARCHAR" length="100" jt="12" />
-			<column name="Principal_Investigator_Business_Street_Address" type="VARCHAR" length="100" jt="12" />
-			<column name="Principal_Investigator_City" type="VARCHAR" jt="12" />
-			<column name="Principal_Investigator_State" type="VARCHAR" jt="12" />
-			<column name="Principal_Investigator_Zip_Code" type="VARCHAR" jt="12" />
-			<column name="Principal_Investigator_Primary_Type" type="VARCHAR" jt="12" />
-			<column name="Principal_Investigator_Specialty" type="VARCHAR" jt="12" />
+			<column name="Principal_Investigator_Profile_ID" type="VARCHAR" length="38" jt="12" mandatory="y" />
+			<column name="Principal_Investigator_Covered_Recipient_Type" type="VARCHAR" length="50" jt="12" />
+			<column name="Principal_Investigator_First_Name" type="VARCHAR" length="20" jt="12" />
+			<column name="Principal_Investigator_Last_Name" type="VARCHAR" length="35" jt="12" />
+			<column name="Principal_Investigator_Business_Street_Address" type="VARCHAR" length="55" jt="12" />
+			<column name="Principal_Investigator_City" type="VARCHAR" length="40" jt="12" />
+			<column name="Principal_Investigator_State" type="VARCHAR" length="2" jt="12" />
+			<column name="Principal_Investigator_Zip_Code" type="VARCHAR" length="10" jt="12" />
+			<column name="Principal_Investigator_Primary_Type" type="VARCHAR" length="50" jt="12" />
+			<column name="Principal_Investigator_Specialty" type="VARCHAR" length="300" jt="12" />
 			<index name="pk_Dim_Principal_Investigators" unique="PRIMARY_KEY" >
 				<column name="Principal_Investigator_Profile_ID" />
 			</index>
 		</table>
 		<table name="Dim_Teaching_Hospital" prior="Dim_Teaching Hospital" >
-			<column name="dim_Teaching_Hospital_ID" type="INT" jt="4" mandatory="y" />
-			<column name="Teaching_Hospital_ID" type="INT" jt="4" mandatory="y" />
+			<column name="dim_Teaching_Hospital_ID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="Teaching_Hospital_ID" type="BIGINT" jt="-5" mandatory="y" />
 			<column name="Teaching_Hospital_Name" type="VARCHAR" length="100" jt="12" />
 			<column name="Recipient_Primary_Business_Street_Address_Line1" prior="Recipient_Primary_Business_Street_Address_Line" type="VARCHAR" length="100" jt="12" />
 			<column name="Recipient_City" type="VARCHAR" jt="12" />
@@ -117,18 +117,18 @@
 			</fk>
 		</table>
 		<table name="Fact_Ownership_Payments" prior="Fact_Resea" >
-			<column name="Record_ID" type="INT" jt="4" mandatory="y" />
-			<column name="Physician_Profile_ID" type="INT" jt="4" mandatory="y" />
-			<column name="Total_Amount_Invested_USDollars" type="INT" jt="4" />
-			<column name="Value_of_Interest" type="INT" jt="4" />
-			<column name="Terms_of_Interest" type="INT" jt="4" />
-			<column name="Submitting_Applicable_Manufacturer" type="INT" jt="4" />
-			<column name="Applicable_Manufacturer_Payment_ID" type="INT" jt="4" />
+			<column name="Record_ID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="Physician_Profile_ID" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="Total_Amount_Invested_USDollars" type="MONEY" jt="3" />
+			<column name="Value_of_Interest" type="MONEY" jt="3" />
+			<column name="Terms_of_Interest" type="VARCHAR" length="500" jt="12" />
+			<column name="Submitting_Applicable_Manufacturer" type="VARCHAR" length="100" jt="12" />
+			<column name="Applicable_Manufacturer_Payment_ID" type="VARCHAR" length="38" jt="12" />
 			<column name="Applicable_Manufacturer_Name" type="VARCHAR" length="100" jt="12" />
-			<column name="Applicable_Manufacturer_State" type="VARCHAR" jt="12" />
-			<column name="Applicable_Manufacturer_Country" type="CHAR" length="2" jt="1" />
-			<column name="Dispute_Status_for_Publication" type="CHAR" length="100" jt="1" />
-			<column name="Interest_Held_by_Physician" type="CHAR" length="100" jt="1" />
+			<column name="Applicable_Manufacturer_State" type="VARCHAR" length="2" jt="12" />
+			<column name="Applicable_Manufacturer_Country" type="CHAR" length="100" jt="1" />
+			<column name="Dispute_Status_for_Publication" type="CHAR" length="3" jt="1" />
+			<column name="Interest_Held_by_Physician" type="CHAR" length="50" jt="1" />
 			<column name="Payment_Publication_Date" type="DATE" jt="91" />
 			<index name="pk_Fact_Ownership_Payments" unique="PRIMARY_KEY" >
 				<column name="Record_ID" />
@@ -144,13 +144,13 @@
 			</fk>
 		</table>
 		<table name="Fact_Research_Payments" prior="Fact" >
-			<column name="Covered_Recipient_Profile_ID" type="BIGINT" jt="-5" mandatory="y" />
-			<column name="Teaching_Hospital_ID" type="BIGINT" jt="-5" mandatory="y" />
-			<column name="Principal_Investigator_Profile_ID" prior="Principal_Investigator_1_Profile_ID" type="BIGINT" jt="-5" mandatory="y" />
-			<column name="Total_Amount_of_Payment_USDollars" type="INT" jt="4" />
+			<column name="Covered_Recipient_Profile_ID" type="VARCHAR" length="38" jt="12" mandatory="y" />
+			<column name="Teaching_Hospital_ID" type="VARCHAR" length="38" jt="12" mandatory="y" />
+			<column name="Principal_Investigator_Profile_ID" prior="Principal_Investigator_1_Profile_ID" type="VARCHAR" length="38" jt="12" mandatory="y" />
+			<column name="Total_Amount_of_Payment_USDollars" type="MONEY" jt="3" />
 			<column name="Date_of_Payment" type="DATE" jt="91" />
-			<column name="Form_of_Payment" type="DATE" jt="91" />
-			<column name="Applicable_GPO_Making_Payment" type="INT" jt="4" mandatory="y" />
+			<column name="Form_of_Payment_or_transfer_of_value" prior="Form_of_Payment" type="VARCHAR" length="100" jt="12" />
+			<column name="Applicable_GPO_Making_Payment" type="VARCHAR" length="38" jt="12" mandatory="y" />
 			<index name="pk_Fact_Research_Payments" unique="PRIMARY_KEY" >
 				<column name="Covered_Recipient_Profile_ID" />
 				<column name="Teaching_Hospital_ID" />
